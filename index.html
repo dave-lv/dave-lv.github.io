@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>aionjanis - Voice Commands</title>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background: #0e0e10;
+			color: #efeff1;
+			min-height: 100vh;
+			padding: 2rem;
+		}
+		.container { max-width: 900px; margin: 0 auto; }
+		header { text-align: center; margin-bottom: 2rem; }
+		h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+		.subtitle { color: #adadb8; font-size: 1rem; }
+		.count { color: #bf94ff; font-weight: 600; }
+		.search {
+			display: block; width: 100%; max-width: 400px;
+			margin: 1.5rem auto; padding: 0.6rem 1rem;
+			background: #1f1f23; border: 1px solid #303032;
+			border-radius: 6px; color: #efeff1; font-size: 1rem; outline: none;
+		}
+		.search:focus { border-color: #bf94ff; }
+		.commands {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+			gap: 0.6rem; margin-top: 1.5rem;
+		}
+		.command {
+			background: #1f1f23; border: 1px solid #303032;
+			border-radius: 6px; padding: 0.6rem 1rem;
+			font-family: 'Consolas', 'Courier New', monospace;
+			font-size: 0.95rem; text-align: center;
+			transition: border-color 0.15s, background 0.15s; cursor: default;
+		}
+		.command:hover { border-color: #bf94ff; background: #26262c; }
+		.command.hidden { display: none; }
+		footer { text-align: center; margin-top: 3rem; color: #53535f; font-size: 0.85rem; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>aionjanis Voice Commands</h1>
+			<p class="subtitle">Type these in chat to play sounds! <span class="count">26</span> commands available.</p>
+		</header>
+		<input type="text" class="search" placeholder="Search commands..." id="search">
+		<div class="commands" id="commands">
+				<div class="command">!airhorn</div>
+				<div class="command">!bruh</div>
+				<div class="command">!cricket</div>
+				<div class="command">!dramatic-chipmunk</div>
+				<div class="command">!explosion</div>
+				<div class="command">!fart</div>
+				<div class="command">!gg</div>
+				<div class="command">!hello-there</div>
+				<div class="command">!inception</div>
+				<div class="command">!john-cena</div>
+				<div class="command">!kaching</div>
+				<div class="command">!laugh-track</div>
+				<div class="command">!mario-coin</div>
+				<div class="command">!nope</div>
+				<div class="command">!oof</div>
+				<div class="command">!poggers</div>
+				<div class="command">!quack</div>
+				<div class="command">!rimshot</div>
+				<div class="command">!sadtrombone</div>
+				<div class="command">!tada</div>
+				<div class="command">!uwu</div>
+				<div class="command">!victory</div>
+				<div class="command">!wow</div>
+				<div class="command">!xp-error</div>
+				<div class="command">!yeet</div>
+				<div class="command">!zing</div>
+		</div>
+		<footer>Updated 2026-03-14</footer>
+	</div>
+	<script>
+		document.getElementById('search').addEventListener('input', function() {
+			const q = this.value.toLowerCase();
+			document.querySelectorAll('.command').forEach(el => {
+				el.classList.toggle('hidden', !el.textContent.toLowerCase().includes(q));
+			});
+		});
+	</script>
+</body>
+</html>
