@@ -8,10 +8,8 @@
 		* { margin: 0; padding: 0; box-sizing: border-box; }
 		body {
 			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-			background: #0e0e10;
-			color: #efeff1;
-			min-height: 100vh;
-			padding: 2rem;
+			background: #0e0e10; color: #efeff1;
+			min-height: 100vh; padding: 2rem;
 		}
 		.container { max-width: 900px; margin: 0 auto; }
 		header { text-align: center; margin-bottom: 2rem; }
@@ -26,8 +24,7 @@
 		}
 		.search:focus { border-color: #bf94ff; }
 		.commands {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+			display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 			gap: 0.6rem; margin-top: 1.5rem;
 		}
 		.command {
@@ -35,9 +32,11 @@
 			border-radius: 6px; padding: 0.6rem 1rem;
 			font-family: 'Consolas', 'Courier New', monospace;
 			font-size: 0.95rem; text-align: center;
-			transition: border-color 0.15s, background 0.15s; cursor: default;
+			transition: border-color 0.15s, background 0.15s;
+			cursor: pointer; user-select: none; color: #efeff1;
 		}
 		.command:hover { border-color: #bf94ff; background: #26262c; }
+		.command.copied { border-color: #00c853; background: #1b3a1b; }
 		.command.hidden { display: none; }
 		footer { text-align: center; margin-top: 3rem; color: #53535f; font-size: 0.85rem; }
 	</style>
@@ -46,36 +45,36 @@
 	<div class="container">
 		<header>
 			<h1>aionjanis Voice Commands</h1>
-			<p class="subtitle">Type these in chat to play sounds! <span class="count">26</span> commands available.</p>
+			<p class="subtitle">Click to copy, then paste in chat! <span class="count">26</span> commands available.</p>
 		</header>
 		<input type="text" class="search" placeholder="Search commands..." id="search">
 		<div class="commands" id="commands">
-				<div class="command">!airhorn</div>
-				<div class="command">!bruh</div>
-				<div class="command">!cricket</div>
-				<div class="command">!dramatic-chipmunk</div>
-				<div class="command">!explosion</div>
-				<div class="command">!fart</div>
-				<div class="command">!gg</div>
-				<div class="command">!hello-there</div>
-				<div class="command">!inception</div>
-				<div class="command">!john-cena</div>
-				<div class="command">!kaching</div>
-				<div class="command">!laugh-track</div>
-				<div class="command">!mario-coin</div>
-				<div class="command">!nope</div>
-				<div class="command">!oof</div>
-				<div class="command">!poggers</div>
-				<div class="command">!quack</div>
-				<div class="command">!rimshot</div>
-				<div class="command">!sadtrombone</div>
-				<div class="command">!tada</div>
-				<div class="command">!uwu</div>
-				<div class="command">!victory</div>
-				<div class="command">!wow</div>
-				<div class="command">!xp-error</div>
-				<div class="command">!yeet</div>
-				<div class="command">!zing</div>
+				<button class="command" onclick="copy(this)">!airhorn</button>
+				<button class="command" onclick="copy(this)">!bruh</button>
+				<button class="command" onclick="copy(this)">!cricket</button>
+				<button class="command" onclick="copy(this)">!dramatic-chipmunk</button>
+				<button class="command" onclick="copy(this)">!explosion</button>
+				<button class="command" onclick="copy(this)">!fart</button>
+				<button class="command" onclick="copy(this)">!gg</button>
+				<button class="command" onclick="copy(this)">!hello-there</button>
+				<button class="command" onclick="copy(this)">!inception</button>
+				<button class="command" onclick="copy(this)">!john-cena</button>
+				<button class="command" onclick="copy(this)">!kaching</button>
+				<button class="command" onclick="copy(this)">!laugh-track</button>
+				<button class="command" onclick="copy(this)">!mario-coin</button>
+				<button class="command" onclick="copy(this)">!nope</button>
+				<button class="command" onclick="copy(this)">!oof</button>
+				<button class="command" onclick="copy(this)">!poggers</button>
+				<button class="command" onclick="copy(this)">!quack</button>
+				<button class="command" onclick="copy(this)">!rimshot</button>
+				<button class="command" onclick="copy(this)">!sadtrombone</button>
+				<button class="command" onclick="copy(this)">!tada</button>
+				<button class="command" onclick="copy(this)">!uwu</button>
+				<button class="command" onclick="copy(this)">!victory</button>
+				<button class="command" onclick="copy(this)">!wow</button>
+				<button class="command" onclick="copy(this)">!xp-error</button>
+				<button class="command" onclick="copy(this)">!yeet</button>
+				<button class="command" onclick="copy(this)">!zing</button>
 		</div>
 		<footer>Updated 2026-03-14</footer>
 	</div>
@@ -86,6 +85,12 @@
 				el.classList.toggle('hidden', !el.textContent.toLowerCase().includes(q));
 			});
 		});
+		function copy(btn) {
+			navigator.clipboard.writeText(btn.textContent).then(() => {
+				btn.classList.add('copied');
+				setTimeout(() => btn.classList.remove('copied'), 600);
+			});
+		}
 	</script>
 </body>
 </html>
