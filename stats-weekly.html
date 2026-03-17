@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AionJanis - Top This Week</title>
+	<style>
+
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background: #0e0e10;
+			color: #efeff1;
+			min-height: 100vh;
+			padding: 2rem;
+		}
+
+		.container {
+			max-width: 900px;
+			margin: 0 auto;
+		}
+
+		header {
+			text-align: center;
+			margin-bottom: 2rem;
+		}
+
+		h1 {
+			font-size: 2rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+		}
+
+		.subtitle {
+			color: #adadb8;
+			font-size: 1rem;
+		}
+
+		.count {
+			color: #bf94ff;
+			font-weight: 600;
+		}
+
+		nav {
+			display: flex;
+			justify-content: center;
+			gap: 0.5rem;
+			margin-bottom: 2rem;
+			flex-wrap: wrap;
+		}
+
+		.nav-link {
+			display: inline-block;
+			padding: 0.5rem 1rem;
+			background: #1f1f23;
+			border: 1px solid #303032;
+			border-radius: 6px;
+			color: #adadb8;
+			text-decoration: none;
+			font-size: 0.9rem;
+			transition: border-color 0.15s, background 0.15s;
+		}
+
+		.nav-link:hover {
+			border-color: #bf94ff;
+			background: #26262c;
+			color: #efeff1;
+		}
+
+		.nav-link.active {
+			border-color: #bf94ff;
+			background: #bf94ff22;
+			color: #bf94ff;
+		}
+
+		footer {
+			text-align: center;
+			margin-top: 3rem;
+			color: #53535f;
+			font-size: 0.85rem;
+		}
+
+		h2 {
+			font-size: 1.2rem;
+			margin-bottom: 1rem;
+			color: #bf94ff;
+		}
+
+		table {
+			width: 100%;
+			max-width: 600px;
+			margin: 0 auto;
+			border-collapse: collapse;
+		}
+
+		th, td {
+			text-align: left;
+			padding: 0.4rem 0.6rem;
+			border-bottom: 1px solid #1f1f23;
+		}
+
+		th {
+			color: #adadb8;
+			font-size: 0.8rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		.rank {
+			width: 2rem;
+			color: #53535f;
+		}
+
+		.cmd {
+			font-family: 'Consolas', 'Courier New', monospace;
+		}
+
+		.uses {
+			text-align: right;
+			color: #bf94ff;
+			font-weight: 600;
+			width: 4rem;
+		}
+
+		.bar-cell {
+			width: 40%;
+		}
+
+		.bar {
+			height: 1rem;
+			background: linear-gradient(90deg, #bf94ff44, #bf94ff);
+			border-radius: 3px;
+			min-width: 2px;
+		}
+
+		.total {
+			text-align: center;
+			font-size: 1.1rem;
+			margin-bottom: 2rem;
+			color: #adadb8;
+		}
+
+		.total .big {
+			font-size: 2rem;
+			font-weight: 700;
+			color: #bf94ff;
+			display: block;
+		}
+
+		.total .big.inline {
+			display: inline;
+		}
+
+		.empty {
+			text-align: center;
+			color: #53535f;
+			padding: 3rem 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>Top This Week</h1>
+			<p class="subtitle">AionJanis Command Statistics</p>
+		</header>
+
+		<nav>
+			<a class="nav-link" href="index.html">Commands</a>
+			<a class="nav-link" href="stats-yesterday.html">Top Yesterday</a>
+			<span class="nav-link active">Top This Week</span>
+			<a class="nav-link" href="stats-alltime.html">Top All-Time</a>
+		</nav>
+
+		<p class="total">
+			<span class="big inline">0</span> commands used <span class="big inline">0</span> times
+		</p>
+
+		<p class="empty">No data yet for this period.</p>
+
+		<footer>
+			Updated 2026-03-17 17:36:09 UTC
+		</footer>
+	</div>
+</body>
+</html>
