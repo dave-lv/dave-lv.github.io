@@ -131,6 +131,7 @@
 		}
 
 		.command {
+			position: relative;
 			background: #1f1f23;
 			border: 1px solid #303032;
 			border-radius: 6px;
@@ -157,6 +158,25 @@
 			background: #1b3a1b;
 		}
 
+		.command.new-today {
+			border-color: #f5a623;
+			background: #f5a62318;
+		}
+
+		.command.new-today::before {
+			content: 'NEW';
+			position: absolute;
+			top: -0.4rem;
+			left: -0.4rem;
+			background: #f5a623;
+			color: #0e0e10;
+			font-size: 0.55rem;
+			font-weight: 700;
+			padding: 0.1rem 0.35rem;
+			border-radius: 3px;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		}
+
 		.command.hidden {
 			display: none;
 		}
@@ -164,7 +184,6 @@
 		.command.chain-selected {
 			border-color: #bf94ff;
 			background: #bf94ff22;
-			position: relative;
 		}
 
 		.command.chain-selected::after {
@@ -269,6 +288,36 @@
 			background: #53535f;
 		}
 
+		.sort-bar {
+			display: flex;
+			justify-content: center;
+			gap: 0.5rem;
+			margin-bottom: 1rem;
+		}
+
+		.sort-btn {
+			padding: 0.4rem 0.8rem;
+			background: #1f1f23;
+			border: 1px solid #303032;
+			border-radius: 6px;
+			color: #adadb8;
+			font-size: 0.8rem;
+			cursor: pointer;
+			transition: border-color 0.15s, background 0.15s;
+		}
+
+		.sort-btn:hover {
+			border-color: #bf94ff;
+			background: #26262c;
+			color: #efeff1;
+		}
+
+		.sort-btn.active {
+			border-color: #bf94ff;
+			background: #bf94ff22;
+			color: #bf94ff;
+		}
+
 		.preview-btn {
 			display: inline-flex;
 			align-items: center;
@@ -323,6 +372,12 @@
 			<button class="search-clear" id="searchClear">&times;</button>
 		</div>
 
+		<div class="sort-bar">
+			<button class="sort-btn active" data-sort="name">A-Z</button>
+			<button class="sort-btn" data-sort="date">Newest</button>
+			<button class="sort-btn" data-sort="popular">Most Used</button>
+		</div>
+
 		<div class="commands" id="commands">
 				<button class="command" data-added="2026-03-15" data-uses="0" onclick="copy(this)"><span class="cmd-name">!pukachu</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/pukachu.ogg">&#9654;</span></button>
 				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-beep</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-beep.ogg">&#9654;</span></button>
@@ -330,7 +385,7 @@
 		</div>
 
 		<footer>
-			Updated 2026-03-17 17:39:08 UTC
+			Updated 2026-03-17 18:25:12 UTC
 		</footer>
 	</div>
 
@@ -472,6 +527,42 @@
 				});
 			}
 		}
+
+		// Sorting
+		const commandsContainer = document.getElementById('commands');
+		const sortBtns = document.querySelectorAll('.sort-btn');
+
+		function sortCommands(mode) {
+			const items = [...commandsContainer.querySelectorAll('.command')];
+			items.sort((a, b) => {
+				if (mode === 'date') {
+					return (b.dataset.added || '').localeCompare(a.dataset.added || '');
+				}
+				if (mode === 'popular') {
+					return (parseInt(b.dataset.uses) || 0) - (parseInt(a.dataset.uses) || 0);
+				}
+				return cmdName(a).localeCompare(cmdName(b));
+			});
+			for (const item of items) {
+				commandsContainer.appendChild(item);
+			}
+		}
+
+		sortBtns.forEach(btn => {
+			btn.addEventListener('click', function() {
+				sortBtns.forEach(b => b.classList.remove('active'));
+				this.classList.add('active');
+				sortCommands(this.dataset.sort);
+			});
+		});
+
+		// Highlight commands added today
+		const today = new Date().toISOString().slice(0, 10);
+		document.querySelectorAll('.command').forEach(el => {
+			if (el.dataset.added === today) {
+				el.classList.add('new-today');
+			}
+		});
 	</script>
 </body>
 </html>
