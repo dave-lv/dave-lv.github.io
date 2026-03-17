@@ -379,13 +379,13 @@
 		</div>
 
 		<div class="commands" id="commands">
-				<button class="command" data-added="2026-03-15" data-uses="0" onclick="copy(this)"><span class="cmd-name">!pukachu</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/pukachu.ogg">&#9654;</span></button>
+				<button class="command" data-added="2026-03-15" data-uses="1" onclick="copy(this)"><span class="cmd-name">!pukachu</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/pukachu.ogg">&#9654;</span></button>
 				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-beep</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-beep.ogg">&#9654;</span></button>
 				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-ping</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-ping.ogg">&#9654;</span></button>
 		</div>
 
 		<footer>
-			Updated 2026-03-17 18:25:12 UTC
+			Updated 2026-03-17 18:29:00 UTC
 		</footer>
 	</div>
 
@@ -531,17 +531,44 @@
 		// Sorting
 		const commandsContainer = document.getElementById('commands');
 		const sortBtns = document.querySelectorAll('.sort-btn');
+		let currentSort = 'name';
+		let sortAsc = true;
 
 		function sortCommands(mode) {
+			if (mode === currentSort) {
+				sortAsc = !sortAsc;
+			} else {
+				currentSort = mode;
+				// Default direction: A-Z ascending, date/popular descending
+				sortAsc = mode === 'name';
+			}
+
+			// Update button labels to show direction
+			sortBtns.forEach(b => {
+				const base = {name: 'A-Z', date: 'Newest', popular: 'Most Used'};
+				if (b.dataset.sort === currentSort) {
+					if (mode === 'name') {
+						b.textContent = sortAsc ? 'A-Z' : 'Z-A';
+					} else if (mode === 'date') {
+						b.textContent = sortAsc ? 'Oldest' : 'Newest';
+					} else {
+						b.textContent = sortAsc ? 'Least Used' : 'Most Used';
+					}
+				} else {
+					b.textContent = base[b.dataset.sort];
+				}
+			});
+
+			const dir = sortAsc ? 1 : -1;
 			const items = [...commandsContainer.querySelectorAll('.command')];
 			items.sort((a, b) => {
 				if (mode === 'date') {
-					return (b.dataset.added || '').localeCompare(a.dataset.added || '');
+					return dir * (a.dataset.added || '').localeCompare(b.dataset.added || '');
 				}
 				if (mode === 'popular') {
-					return (parseInt(b.dataset.uses) || 0) - (parseInt(a.dataset.uses) || 0);
+					return dir * ((parseInt(a.dataset.uses) || 0) - (parseInt(b.dataset.uses) || 0));
 				}
-				return cmdName(a).localeCompare(cmdName(b));
+				return dir * cmdName(a).localeCompare(cmdName(b));
 			});
 			for (const item of items) {
 				commandsContainer.appendChild(item);
