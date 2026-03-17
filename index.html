@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>aionjanis - Voice Commands</title>
+	<title>AionJanis - Voice Commands</title>
 	<style>
+
 		* { margin: 0; padding: 0; box-sizing: border-box; }
 
 		body {
@@ -41,29 +42,92 @@
 			font-weight: 600;
 		}
 
+		nav {
+			display: flex;
+			justify-content: center;
+			gap: 0.5rem;
+			margin-bottom: 2rem;
+			flex-wrap: wrap;
+		}
+
+		.nav-link {
+			display: inline-block;
+			padding: 0.5rem 1rem;
+			background: #1f1f23;
+			border: 1px solid #303032;
+			border-radius: 6px;
+			color: #adadb8;
+			text-decoration: none;
+			font-size: 0.9rem;
+			transition: border-color 0.15s, background 0.15s;
+		}
+
+		.nav-link:hover {
+			border-color: #bf94ff;
+			background: #26262c;
+			color: #efeff1;
+		}
+
+		.nav-link.active {
+			border-color: #bf94ff;
+			background: #bf94ff22;
+			color: #bf94ff;
+		}
+
+		footer {
+			text-align: center;
+			margin-top: 3rem;
+			color: #53535f;
+			font-size: 0.85rem;
+		}
+
+		.search-wrapper {
+			position: relative;
+			width: 100%;
+			max-width: 400px;
+			margin: 0 auto 1.5rem;
+		}
+
 		.search {
 			display: block;
 			width: 100%;
-			max-width: 400px;
-			margin: 1.5rem auto;
-			padding: 0.6rem 1rem;
+			padding: 0.6rem 2.2rem 0.6rem 1rem;
 			background: #1f1f23;
 			border: 1px solid #303032;
 			border-radius: 6px;
 			color: #efeff1;
 			font-size: 1rem;
 			outline: none;
+			box-sizing: border-box;
 		}
 
 		.search:focus {
 			border-color: #bf94ff;
 		}
 
+		.search-clear {
+			position: absolute;
+			right: 0.5rem;
+			top: 50%;
+			transform: translateY(-50%);
+			background: none;
+			border: none;
+			color: #adadb8;
+			font-size: 1.2rem;
+			cursor: pointer;
+			display: none;
+			padding: 0.2rem 0.4rem;
+			line-height: 1;
+		}
+
+		.search-clear:hover {
+			color: #efeff1;
+		}
+
 		.commands {
 			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+			grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 			gap: 0.6rem;
-			margin-top: 1.5rem;
 		}
 
 		.command {
@@ -73,10 +137,14 @@
 			padding: 0.6rem 1rem;
 			font-family: 'Consolas', 'Courier New', monospace;
 			font-size: 0.95rem;
-			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.4rem;
 			transition: border-color 0.15s, background 0.15s;
 			cursor: pointer;
 			user-select: none;
+			color: #efeff1;
 		}
 
 		.command:hover {
@@ -93,45 +161,316 @@
 			display: none;
 		}
 
-		footer {
-			text-align: center;
-			margin-top: 3rem;
-			color: #53535f;
-			font-size: 0.85rem;
+		.command.chain-selected {
+			border-color: #bf94ff;
+			background: #bf94ff22;
+			position: relative;
+		}
+
+		.command.chain-selected::after {
+			content: attr(data-chain-order);
+			position: absolute;
+			top: -0.4rem;
+			right: -0.4rem;
+			background: #bf94ff;
+			color: #0e0e10;
+			font-size: 0.7rem;
+			font-weight: 700;
+			width: 1.3rem;
+			height: 1.3rem;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		}
+
+		.chain-bar {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+			margin-bottom: 1rem;
+		}
+
+		.chain-toggle {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			cursor: pointer;
+			font-size: 0.9rem;
+			color: #adadb8;
+			user-select: none;
+		}
+
+		.chain-toggle input {
+			appearance: none;
+			width: 2.4rem;
+			height: 1.3rem;
+			background: #303032;
+			border-radius: 0.65rem;
+			position: relative;
+			cursor: pointer;
+			transition: background 0.2s;
+		}
+
+		.chain-toggle input::after {
+			content: '';
+			position: absolute;
+			top: 0.15rem;
+			left: 0.15rem;
+			width: 1rem;
+			height: 1rem;
+			background: #adadb8;
+			border-radius: 50%;
+			transition: transform 0.2s, background 0.2s;
+		}
+
+		.chain-toggle input:checked {
+			background: #bf94ff44;
+		}
+
+		.chain-toggle input:checked::after {
+			transform: translateX(1.1rem);
+			background: #bf94ff;
+		}
+
+		.chain-copy-btn {
+			display: none;
+			padding: 0.5rem 1.2rem;
+			background: #bf94ff;
+			color: #0e0e10;
+			border: none;
+			border-radius: 6px;
+			font-size: 0.9rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: opacity 0.15s;
+		}
+
+		.chain-copy-btn:hover {
+			opacity: 0.85;
+		}
+
+		.chain-copy-btn.visible {
+			display: inline-block;
+		}
+
+		.chain-copy-btn.copied {
+			background: #00c853;
+		}
+
+		.chain-clear-btn {
+			background: #303032;
+			color: #efeff1;
+		}
+
+		.chain-clear-btn:hover {
+			background: #53535f;
+		}
+
+		.preview-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 1.4rem;
+			height: 1.4rem;
+			font-size: 0.7rem;
+			background: #303032;
+			border-radius: 50%;
+			color: #adadb8;
+			cursor: pointer;
+			transition: background 0.15s, color 0.15s;
+			flex-shrink: 0;
+		}
+
+		.preview-btn:hover {
+			background: #bf94ff;
+			color: #0e0e10;
+		}
+
+		.preview-btn.playing {
+			background: #bf94ff;
+			color: #0e0e10;
 		}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<header>
-			<h1>aionjanis Voice Commands</h1>
-			<p class="subtitle">Click to copy, then paste in chat! <span class="count">1</span> commands available.</p>
+			<h1>AionJanis Voice Commands</h1>
+			<p class="subtitle">Click to copy, then paste in chat! <span class="count">3</span> commands available.</p>
 		</header>
 
-		<input type="text" class="search" placeholder="Search commands..." id="search">
+		<nav>
+			<span class="nav-link active">Commands</span>
+			<a class="nav-link" href="stats-yesterday.html">Top Yesterday</a>
+			<a class="nav-link" href="stats-weekly.html">Top This Week</a>
+			<a class="nav-link" href="stats-alltime.html">Top All-Time</a>
+		</nav>
+
+		<div class="chain-bar">
+			<label class="chain-toggle">
+				<input type="checkbox" id="chainToggle">
+				Chain Copy
+			</label>
+			<button class="chain-copy-btn" id="chainCopyBtn">Copy</button>
+			<button class="chain-copy-btn chain-clear-btn" id="chainClearBtn">Clear</button>
+		</div>
+
+		<div class="search-wrapper">
+			<input type="text" class="search" placeholder="Search commands..." id="search">
+			<button class="search-clear" id="searchClear">&times;</button>
+		</div>
 
 		<div class="commands" id="commands">
-				<button class="command" onclick="copy(this)">!pukachu</button>
+				<button class="command" data-added="2026-03-15" data-uses="0" onclick="copy(this)"><span class="cmd-name">!pukachu</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/pukachu.ogg">&#9654;</span></button>
+				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-beep</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-beep.ogg">&#9654;</span></button>
+				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-ping</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-ping.ogg">&#9654;</span></button>
 		</div>
 
 		<footer>
-			Updated 2026-03-15 15:18:05 UTC
+			Updated 2026-03-17 17:36:11 UTC
 		</footer>
 	</div>
 
+	<audio id="previewAudio" preload="none"></audio>
+
 	<script>
-		document.getElementById('search').addEventListener('input', function() {
+		function cmdName(btn) {
+			const span = btn.querySelector('.cmd-name');
+			return span ? span.textContent : btn.textContent;
+		}
+
+		let currentPreviewBtn = null;
+		const previewAudio = document.getElementById('previewAudio');
+
+		previewAudio.addEventListener('ended', function() {
+			if (currentPreviewBtn) {
+				currentPreviewBtn.innerHTML = '&#9654;';
+				currentPreviewBtn.classList.remove('playing');
+				currentPreviewBtn = null;
+			}
+		});
+
+		function preview(btn) {
+			const src = btn.getAttribute('data-src');
+			if (!src) return;
+
+			// If clicking the same button, stop playback
+			if (currentPreviewBtn === btn) {
+				previewAudio.pause();
+				previewAudio.currentTime = 0;
+				btn.innerHTML = '&#9654;';
+				btn.classList.remove('playing');
+				currentPreviewBtn = null;
+				return;
+			}
+
+			// Stop any current playback
+			if (currentPreviewBtn) {
+				previewAudio.pause();
+				currentPreviewBtn.innerHTML = '&#9654;';
+				currentPreviewBtn.classList.remove('playing');
+			}
+
+			currentPreviewBtn = btn;
+			btn.innerHTML = '&#9632;';
+			btn.classList.add('playing');
+			previewAudio.src = src;
+			previewAudio.play().catch(() => {
+				btn.innerHTML = '&#9654;';
+				btn.classList.remove('playing');
+				currentPreviewBtn = null;
+			});
+		}
+
+		const searchInput = document.getElementById('search');
+		const searchClear = document.getElementById('searchClear');
+
+		searchInput.addEventListener('input', function() {
 			const q = this.value.toLowerCase();
 			document.querySelectorAll('.command').forEach(el => {
 				el.classList.toggle('hidden', !el.textContent.toLowerCase().includes(q));
 			});
+			searchClear.style.display = this.value ? 'block' : 'none';
 		});
 
-		function copy(btn) {
-			navigator.clipboard.writeText(btn.textContent).then(() => {
-				btn.classList.add('copied');
-				setTimeout(() => btn.classList.remove('copied'), 600);
+		searchClear.addEventListener('click', function() {
+			searchInput.value = '';
+			searchInput.dispatchEvent(new Event('input'));
+			searchInput.focus();
+		});
+
+		let chainMode = false;
+		const chainSelected = []; // ordered list of selected button elements
+		const MAX_CHAIN = 5;
+		const chainToggle = document.getElementById('chainToggle');
+		const chainCopyBtn = document.getElementById('chainCopyBtn');
+		const chainClearBtn = document.getElementById('chainClearBtn');
+
+		chainToggle.addEventListener('change', function() {
+			chainMode = this.checked;
+			if (!chainMode) {
+				clearChain();
+			}
+		});
+
+		chainClearBtn.addEventListener('click', clearChain);
+
+		chainCopyBtn.addEventListener('click', function() {
+			const text = chainSelected.map(btn => cmdName(btn)).join(' ');
+			navigator.clipboard.writeText(text).then(() => {
+				chainCopyBtn.classList.add('copied');
+				chainCopyBtn.textContent = 'Copied!';
+				setTimeout(() => {
+					chainCopyBtn.classList.remove('copied');
+					chainCopyBtn.textContent = 'Copy';
+				}, 600);
 			});
+		});
+
+		function clearChain() {
+			chainSelected.length = 0;
+			document.querySelectorAll('.command.chain-selected').forEach(el => {
+				el.classList.remove('chain-selected');
+				el.removeAttribute('data-chain-order');
+			});
+			updateChainCopyBtn();
+		}
+
+		function updateChainOrder() {
+			chainSelected.forEach((btn, i) => {
+				btn.setAttribute('data-chain-order', i + 1);
+			});
+		}
+
+		function updateChainCopyBtn() {
+			const hasSelection = chainSelected.length > 0;
+			chainCopyBtn.classList.toggle('visible', hasSelection);
+			chainClearBtn.classList.toggle('visible', hasSelection);
+		}
+
+		function copy(btn) {
+			if (chainMode) {
+				const idx = chainSelected.indexOf(btn);
+				if (idx !== -1) {
+					chainSelected.splice(idx, 1);
+					btn.classList.remove('chain-selected');
+					btn.removeAttribute('data-chain-order');
+					updateChainOrder();
+				} else if (chainSelected.length < MAX_CHAIN) {
+					chainSelected.push(btn);
+					btn.classList.add('chain-selected');
+					btn.setAttribute('data-chain-order', chainSelected.length);
+				}
+				updateChainCopyBtn();
+			} else {
+				navigator.clipboard.writeText(cmdName(btn)).then(() => {
+					btn.classList.add('copied');
+					setTimeout(() => btn.classList.remove('copied'), 600);
+				});
+			}
 		}
 	</script>
 </body>
