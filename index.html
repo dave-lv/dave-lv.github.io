@@ -141,21 +141,28 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			gap: 0.4rem;
+			flex-wrap: wrap;
+			gap: 0.3rem;
 			transition: border-color 0.15s, background 0.15s;
 			cursor: pointer;
 			user-select: none;
 			color: #efeff1;
 		}
 
+		.cmd-meta {
+			width: 100%;
+			text-align: center;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			font-size: 0.7rem;
+			color: #7a7a85;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
 		.command:hover {
 			border-color: #bf94ff;
 			background: #26262c;
-		}
-
-		.command.copied {
-			border-color: #00c853;
-			background: #1b3a1b;
 		}
 
 		.command.new-today {
@@ -175,6 +182,11 @@
 			padding: 0.1rem 0.35rem;
 			border-radius: 3px;
 			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		}
+
+		.command.copied {
+			border-color: #00c853;
+			background: #1b3a1b;
 		}
 
 		.command.hidden {
@@ -353,6 +365,7 @@
 
 		<nav>
 			<span class="nav-link active">Commands</span>
+			<a class="nav-link" href="meta.html">Meta Commands</a>
 			<a class="nav-link" href="stats-yesterday.html">Top Yesterday</a>
 			<a class="nav-link" href="stats-weekly.html">Top This Week</a>
 			<a class="nav-link" href="stats-alltime.html">Top All-Time</a>
@@ -379,13 +392,13 @@
 		</div>
 
 		<div class="commands" id="commands">
-				<button class="command" data-added="2026-03-15" data-uses="1" onclick="copy(this)"><span class="cmd-name">!pukachu</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/pukachu.ogg">&#9654;</span></button>
-				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-beep</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-beep.ogg">&#9654;</span></button>
-				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-ping</span> <span class="preview-btn" onclick="event.stopPropagation(); preview(this)" data-src="sounds/test-ping.ogg">&#9654;</span></button>
+				<button class="command" data-added="2026-03-15" data-uses="1" onclick="copy(this)"><span class="cmd-name">!pukachu</span></button>
+				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-beep</span></button>
+				<button class="command" data-added="2026-03-17" data-uses="0" onclick="copy(this)"><span class="cmd-name">!test-ping</span></button>
 		</div>
 
 		<footer>
-			Updated 2026-03-17 18:29:00 UTC
+			Updated 2026-03-22 18:44:25 UTC
 		</footer>
 	</div>
 
